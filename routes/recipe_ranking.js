@@ -16,7 +16,7 @@ router.get('/entry/:id', async function(req, res) {
 })
 
 router.get('/entries', async function(req, res) {
-  let numOfEntries = req.query.entries;
+  let numOfEntries = req.query.number;
   let result = await ranking.getRanking(numOfEntries);
   let response = {
     "results": []
