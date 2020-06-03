@@ -1,22 +1,19 @@
 const express = require('express');
-const redis = require('redis');
 const { Ranking } = require('../models/Ranking');
 const ranking = new Ranking();
 
 const router = express.Router();
-const client = redis.createClient();
 
-router.post('/entry', function(req, res) {
-  let message = JSON.stringify(req.body);
-  client.publish("recipe_ranking", message);
-  res.send("OK");
-});
-
-router.delete('/entry', function(req, res) {
-  let recipeId = req.query.recipeId;
-  ranking.deleteFromRanking(recipeId);
-  res.send("OK");
-});
+router.get('/entry/:id', async function(req, res) {
+  let recipeId = req.params.id;
+  let result = await ranking.getRecipeRanking(recipeId);
+  let obj = {
+    "recipeId": recipeId,
+    "score": result["score"],
+    "rank": result["rank"]
+  }
+  res.json(obj);
+})
 
 router.get('/entries', async function(req, res) {
   let numOfEntries = req.query.entries;
@@ -30,7 +27,6 @@ router.get('/entries', async function(req, res) {
     temp["score"] = result[i+1];
     response["results"].push(temp);
   }
-  console.log(response);
   res.json(response);
 });
 
