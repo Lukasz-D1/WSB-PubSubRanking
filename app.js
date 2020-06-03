@@ -3,10 +3,8 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 
-
-let indexRouter = require('./routes/index');
+let channelsRouter = require('./routes/channels');
 let recipeRankingRouter = require('./routes/recipe_ranking');
-
 
 let app = express();
 
@@ -16,8 +14,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/recipe_ranking', recipeRankingRouter);
+app.use('/api/channels', channelsRouter);
+app.use('/api/recipe_ranking', recipeRankingRouter);
 
 module.exports = app;
 
