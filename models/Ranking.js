@@ -47,6 +47,9 @@ class Ranking {
     }
 
     async getRanking(n = -1) {
+        if (n != -1) {
+            n--;
+        }
         let result = await this.ranker.zrangeAsync(this.channelName, 0, n, "WITHSCORES");
         return result;
     }    
